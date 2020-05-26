@@ -14,20 +14,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.spark.status.api.v1.sql
 
-import java.util.Date
+package org.apache.spark.util.kvstore;
 
-class ExecutionData private[spark] (
-    val id: Long,
-    val status: String,
-    val description: String,
-    val planDescription: String,
-    val metrics: Seq[Metrics],
-    val submissionTime: Date,
-    val duration: Long,
-    val runningJobIds: Seq[Int],
-    val successJobIds: Seq[Int],
-    val failedJobIds: Seq[Int])
+public class CustomType2 {
 
-case class Metrics private[spark] (metricName: String, metricValue: String)
+  @KVIndex(parent = "parentId")
+  public String key;
+
+  @KVIndex("id")
+  public String id;
+
+  @KVIndex("parentId")
+  public String parentId;
+
+  @Override
+  public boolean equals(Object o) {
+    if (o instanceof CustomType2) {
+      CustomType2 other = (CustomType2) o;
+      return id.equals(other.id) && parentId.equals(other.parentId);
+    }
+    return false;
+  }
+
+  @Override
+  public int hashCode() {
+    return id.hashCode() ^ parentId.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return "CustomType2[key=" + key + ",id=" + id + ",parentId=" + parentId;
+  }
+
+}
